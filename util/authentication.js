@@ -1,9 +1,16 @@
+const db = require('../data/database');
+
 function createUserSession(req, user, action) {
     const userId = db.query('SELECT (id) FROM fbla.users WHERE username = ?', [user.username]);
     req.session.uid = userId.toString();
     req.session.save(action);
 }
 
+function destroyUserAuthSession(req) {
+    req.session.uid = null;
+}
+
 module.exports = {
-    createUserSession: createUserSession
+    createUserSession: createUserSession,
+    destroyUserAuthSession: destroyUserAuthSession
 }

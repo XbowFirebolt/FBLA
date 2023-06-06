@@ -9,10 +9,6 @@ class User {
         this.password = password;
     }
 
-    getUserWithSameUsername() {
-        return db.query('SELECT * FROM fbla.users WHERE username = ?', [this.username]);
-    }
-
     async signup() {
         const hashedPassword = await bcrypt.hash(this.password, 12);
 
@@ -26,6 +22,19 @@ class User {
 
     hasMatchingPassword(hashedPassword) {
         return bcrypt.compare(this.password, hashedPassword);
+    }
+
+    async getUsers(next) {
+        const query = 'SELECT * FROM fbla.users WHERE username = ?';
+
+        try {
+            const [users] = await db.query(query, this.username);
+            return [users];
+        } catch(error) {
+            next(error);
+            return;
+        }
+
     }
 }
 

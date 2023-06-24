@@ -1,0 +1,57 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Signup'}) %>
+<link rel="stylesheet" href="/styles/forms.css">
+<link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/createSchool.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Create New School</h1>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Input</h2>
+                <p><%= inputData.errorMessage %></p>
+            </section>
+        <% } %>
+        <form action="/create-school" method="POST">
+            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+            <p>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" value="<%= inputData.name %>" required>
+            </p>
+            <p>
+                <label for="password">Admin Password</label>
+                <input type="password" id="password" name="password" minlength="6" value="<%= inputData.password %>" required>
+            </p>
+            <hr>
+            <p>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" value="<%= inputData.address %>" required>
+            </p>
+            <p>
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" value="<%= inputData.city %>" required>
+            </p>
+            <p>
+                <label for="state">State/Province</label>
+                <input type="text" id="state" name="state" value="<%= inputData.state %>" required>
+            </p>
+            <p>
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" value="<%= inputData.country %>" required>
+            </p>
+            <p>
+                <label for="Zip or postal code">Postal Code</label>
+                <input 
+                    type="text" 
+                    id="postal" 
+                    name="postal" 
+                    minlength="5"
+                    maxlength="5"
+                    value="<%= inputData.postal %>" 
+                    required>
+            </p>
+            <button class="btn">Create School</button>
+        </form>
+    </main>
+<%- include('../../../shared/includes/footer') %>

@@ -1,0 +1,51 @@
+#bottomSection {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+#upper-contents,
+#lower-contents {
+    text-align: center;
+    display: block;
+    margin: var(--space-2) auto;
+}
+
+#upper-contents ul,
+#lower-contents ul {
+    text-decoration: none;
+    list-style: none;
+}
+
+#upper-contents ul li {
+    display: inline;
+    float: left;
+    width: 33.33%;
+}
+
+#lower-contents ul li {
+    display: inline;
+    float: left;
+    width: 20%;
+}
+
+form {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+#schoolImage {
+    height: 350px;
+    width: 350px;
+    margin: var(--space-6) auto 0 auto;
+    display: block;
+}
+
+hr {
+    min-width: 100%;
+}

@@ -1,0 +1,30 @@
+#joinForm {
+  max-width: 25rem;
+  margin: var(--space-8) auto;
+  padding: var(--space-4);
+  text-align: center;
+  display: block;
+}
+
+#joinForm input {
+  text-align: center;
+  display: block;
+  max-width: 25rem;
+  margin: var(--space-6) auto;
+  padding: var(--space-2);
+  border-radius: var(--border-radius-medium);
+  outline: none;
+  border: 0;
+}
+
+#preview-details {
+  text-align: center;
+  display: block;
+  margin: var(--space-2) auto;
+}
+
+#school {
+  height: 350px;
+  width: 350px;
+  margin: var(--space-6) 0 0 0;
+}

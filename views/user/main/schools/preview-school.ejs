@@ -1,0 +1,53 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/new-schools.css">
+<link rel="stylesheet" href="/styles/preview.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1 class="center">Look For a Different School</h1>
+            <% if (inputData.errorMessage) { %>
+                <section class="alert">
+                    <h2>Invalid Credentials</h2>
+                    <p><%= inputData.errorMessage %></p>
+                </section>
+            <% } %>
+            <section class="center">
+                <form action="/preview-school" method="POST" id="search">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                    <input type="text" name="searchbar" placeholder="Search using a school ID" value="<%= inputData.searchbar %>">
+                    <button type="text" id=search-button><img src="images/search.png" id=search-icon></button>
+                </form>
+            </section>
+            <section id="preview-details">
+                <img src="/images/school.jpg" alt="" id="school">
+                <div>
+                    <h1><%= inputData.school.name %></h1>
+                    <h3>School ID</h3>
+                    <p id="id"><%= inputData.school.id %></p>
+                    <h3>Students</h3>
+                    <p><%= inputData.school.students %></p>
+                    <h3>Address</h3>
+                    <p><%= inputData.school.address %></p>
+                    <form action="/join" method="POST" id="joinForm">
+                        <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                        <input type="text" name="adminPassword" placeholder="Enter Admin Password">
+                        <p></p>
+                        <button class="btn">Join</button>
+                    </form>
+                </div>
+            </section>
+            <section id="bottom-section">
+                <p>
+                    <h2>Not The Right School?</h3>
+                    <a href="/create-school" class="btn">Create a School</a>
+                </p>
+            </section>
+        <% } %>
+    </main>
+<%- include('../../../shared/includes/footer') %>

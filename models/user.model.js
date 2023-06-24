@@ -36,6 +36,15 @@ class User {
         }
 
     }
+
+    async existsAlready(next) {
+        const [existingUser] = await this.getUsers(next);
+
+        if(existingUser[0] === undefined) {
+            return false;
+        }
+        return true;
+    }
 }
 
 module.exports = User;

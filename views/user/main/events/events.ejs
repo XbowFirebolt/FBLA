@@ -1,0 +1,52 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/students.css">
+<link rel="stylesheet" href="/styles/events.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1>Events</h1>
+            <% if (inputData.exists) { %>
+            <section id="center">
+                <form action="/eventsSearch" method="POST" class="search">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                    <input type="text" name="searchbar" placeholder="Search for an event">
+                    <button class="btn">Search</button>
+                </form>
+            </section>
+            <table class="table">
+                <tr class="table-header">
+                    <th><a href="/events/events.event_id" class="btn">Event ID</a></th>
+                    <th><a href="/events/events.name" class="btn">Name</a></th>
+                    <th><a href="/events/events.type" class="btn">Type</a></th>
+                    <th><a href="/events/events.date" class="btn">Date</a></th>
+                    <th><a href="/events/events.reward" class="btn">Reward</a></th>
+                    <th><a href="" class="btn">Attendance</a></th>
+                </tr>
+                <tbody id="student-table">
+                    <% for (event of inputData.allEvents) { %>
+                        <tr>
+                            <td><%= event.event_id %></td>
+                            <td><%= event.name %></td>
+                            <td><%= event.type %></td>
+                            <td><%= event.date.toISOString().split("T")[0] %></td>
+                            <td><%= event.reward %></td>
+                            <td><a href="/setAttendance/<%= event.event_id %>">Set</a></td>
+                            <td><a href="/editEvents/<%= event.event_id %>">Edit</a></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <% } %>
+            <section id="bottomSection">
+                <h2>Adding new Events?</h2>
+                <a href="/add-events" class="btn">Add an Event</a>
+            </section>
+        <% } %>
+    </main>
+<%- include('../../../shared/includes/footer') %>

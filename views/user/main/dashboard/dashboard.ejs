@@ -1,0 +1,21 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/dashboard.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Dashboard</h1>
+        <div class="dropdown">
+            <button class="btn">Schools ▾</button>
+            <div class="dropdown-content">
+                <% for (const school of inputData.schools) { %>
+                    <a href="dashboard/<%= school.schools_id %>"><%= school.name %></a>
+                <% } %>
+            </div>
+        </div>
+        <hr>
+        <section>
+            <p>Stats...</p>
+        </section>
+    </main>
+<%- include('../../../shared/includes/footer') %>

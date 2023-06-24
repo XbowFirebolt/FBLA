@@ -1,0 +1,36 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Add Prizes'}) %>
+<link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/forms.css">
+<link rel="stylesheet" href="/styles/createSchool.css">
+<link rel="stylesheet" href="/styles/add-prize.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Add New Prize</h1>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Input</h2>
+                <p><%= inputData.errorMessage %></p>
+            </section>
+        <% } %>
+        <form action="/addPrize" method="POST">
+            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+            <p>
+                <label for="name">Prize's Name</label>
+                <input type="text" id="name" name="name" value="<%= inputData.name %>" required>
+            </p>
+            <label for="rewardTypes">Choose a reward type:</label>
+                <select name="rewardTypes" id="rewardTypes">
+                    <option value="1">A School Reward</option>
+                    <option value="2">A Food Reward</option>
+                    <option value="3">A School Spirit Item</option>
+                </select>
+            <p>
+                <label for="points_required">Points Required</label>
+                <input type="text" id="points_required" name="points_required" value="<%= inputData.points_required %>" required>
+            </p>
+            <button class="btn">Add Prize</button>
+        </form>
+    </main>
+<%- include('../../../shared/includes/footer') %>

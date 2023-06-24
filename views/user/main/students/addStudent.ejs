@@ -1,0 +1,33 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Add Students'}) %>
+<link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/forms.css">
+<link rel="stylesheet" href="/styles/createSchool.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Add New Student</h1>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Input</h2>
+                <p><%= inputData.errorMessage %></p>
+            </section>
+        <% } %>
+        <form action="/addStudent" method="POST">
+            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+            <p>
+                <label for="name">Student's Name</label>
+                <input type="text" id="name" name="name" value="<%= inputData.name %>" required>
+            </p>
+            <p>
+                <label for="grade">Student's Grade</label>
+                <input type="text" id="grade" name="grade" value="<%= inputData.grade %>" required>
+            </p>
+            <p>
+                <label for="points">Starting Points (Default is 0)</label>
+                <input type="text" id="points" name="points" value="<%= inputData.points %>" required>
+            </p>
+            <button class="btn">Add Student</button>
+        </form>
+    </main>
+<%- include('../../../shared/includes/footer') %>

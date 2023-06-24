@@ -1,0 +1,74 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/schools.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1>My School</h1>
+            <% if (inputData.exists) { %>
+                <section>
+                    <h1><%= inputData.school.name %></h1>
+                    <img src="/images/school.jpg" alt="" id="schoolImage">
+                    <div id="upper-contents">
+                        <ul>
+                            <li>
+                                <h3>School ID</h3>
+                                <p><%= inputData.school.id %></p>
+                            </li>
+                            <li>
+                                <h3>Students</h3>
+                                <p><%= inputData.school.students %></p>
+                            </li>
+                            <li>
+                                <h3>District</h3>
+                                <p><%= inputData.school.district_id %></p>
+                            </li>
+                        </ul>
+                    </div>
+                        <hr>
+                    <div id="lower-contents">
+                        <ul>
+                            <li>
+                                <h3>Address</h3>
+                                <p><%= inputData.school.address %></p>
+                            </li>
+                            <li>
+                                <h3>City</h3>
+                                <p><%= inputData.school.city %></p>
+                            </li>
+                            <li>
+                                <h3>State/Providence</h3>
+                                <p><%= inputData.school.state %></p>
+                            </li>
+                            <li>
+                                <h3>Country</h3>
+                                <p><%= inputData.school.country %></p>
+                            </li>
+                            <li>
+                                <h3>Postal Code</h3>
+                                <p><%= inputData.school.postal %></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr>
+                        <form action="/edit-school" method="POST" id="editForm">
+                            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                            <p></p>
+                            <button class="btn">Edit</button>
+                        </form>
+                    <p></p>
+                </section>
+            <% } %>
+            <section id="bottomSection">
+                <h2>Joining a New School?</h2>
+                <a href="/new-schools" class="btn">Find a new school</a>
+            </section>
+        <% } %>
+        <a href="https://www.vecteezy.com/free-vector/office-building" style="color: rgb(70, 70, 70);">Office Building Vectors by Vecteezy</a>
+    </main>
+<%- include('../../../shared/includes/footer') %>

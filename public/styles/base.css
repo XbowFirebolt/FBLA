@@ -13,16 +13,16 @@ html {
     --color-gray-600: rgb(32, 29, 26);
     --color-gray-700: rgb(31, 26, 22);
 
-    --color-primary-50: rgb(154, 189, 255);
-    --color-primary-100: rgb(116, 127, 230);
-    --color-primary-200: rgb(86, 88, 230);
-    --color-primary-400: rgb(52, 37, 187);
-    --color-primary-500: rgb(20, 23, 206);
-    --color-primary-700: rgb(9, 10, 117);
+    --color-primary-50: rgb(148, 212, 255);
+    --color-primary-100: rgb(123, 158, 255);
+    --color-primary-200: rgb(86, 124, 230);
+    --color-primary-400: rgb(37, 72, 187);
+    --color-primary-500: rgb(20, 63, 206);
+    --color-primary-700: rgb(9, 43, 117);
     --color-primary-200-contrast: rgb(230, 217, 42);
     --color-primary-500-contrast: white;
 
-    --color-error-100: rgb(255, 192, 180);
+    --color-error-100: rgb(255, 225, 180);
     --color-error-500: rgb(192, 51, 15);
 
     --color-primary-500-bg: rgb(63, 60, 58);
@@ -77,4 +77,21 @@ a {
 .btn:active {
     background-color: var(--color-primary-700);
     border-color: var(--color-primary-700);
+}
+
+.alert {
+    border-radius: var(--border-radius-small);
+    background-color: var(--color-error-100);
+    color: var(--color-error-500);
+    padding: var(--space-4);
+}
+
+.alert h2 {
+    font-size: 1rem;
+    margin: var(--space-2) 0;
+    text-transform: uppercase;
+}
+
+.alert p{
+    margin: var(--space-2) 0;
 }

@@ -1,0 +1,90 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/students.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1>Students</h1>
+            <% if (inputData.exists) { %>
+                <section>
+                    <h2>The Top 5 Students</h2>
+                    <div id="top5">
+                        <ul>
+                            <% for (student of inputData.TOP5) { %>
+                            <li>
+                                <h3><%= student.name %></h3>
+                                <p><%= student.points %></p>
+                            </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <hr>
+                    <h2>5 Random Students</h2>
+                    <div id="random">
+                        <ul>
+                            <% for (student of inputData.random5) { %>
+                                <li>
+                                    <h3><%= student.name %></h3>
+                                    <p><%= student.points %></p>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                    <hr>    
+                    <section id="center">
+                        <% if (inputData.errorMessage) { %>
+                            <section class="alert">
+                                <h2>Invalid Credentials</h2>
+                                <p><%= inputData.errorMessage %></p>
+                            </section>
+                        <% } %>
+                        <form action="/randomize" method="POST" class="search">
+                            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                            <input type="text" name="searchbar" placeholder="Select A Grade (Not Required)">
+                            <button class="btn">Randomize</button>
+                        </form>
+                    </section>  
+                </section>  
+            <% } %>
+            <section id="bottomSection">
+                <h2>Adding new Students?</h2>
+                <a href="/add-students" class="btn">Add a Student</a>
+                <a href="/import-students" class="btn">Import Students</a>
+            </section>
+            <% if (inputData.exists) { %>
+            <hr>
+            <section id="center">
+                <form action="/tableSearch" method="POST" class="search">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                    <input type="text" name="searchbar" placeholder="Search for a name">
+                    <button class="btn">Search</button>
+                </form>
+            </section>
+            <table class="table">
+                <tr class="table-header">
+                    <th><a href="/students/students.id" class="btn">Student ID</a></th>
+                    <th><a href="/students/students.name" class="btn">Name</a></th>
+                    <th><a href="/students/students.grade" class="btn">Grade</a></th>
+                    <th><a href="/students/students.points" class="btn">Points</a></th>
+                </tr>
+                <tbody id="student-table">
+                    <% for (student of inputData.allStudents) { %>
+                        <tr>
+                            <td><%= student.student_id %></td>
+                            <td><%= student.name %></td>
+                            <td><%= student.grade %></td>
+                            <td><%= student.points %></td>
+                            <td><a href="/editStudent/<%= student.student_id %>">Edit</a></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <% } %>
+        <% } %>
+    </main>
+<%- include('../../../shared/includes/footer') %>

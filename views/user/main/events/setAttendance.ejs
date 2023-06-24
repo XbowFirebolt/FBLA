@@ -1,0 +1,44 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Add Prizes'}) %>
+<link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/forms.css">
+<link rel="stylesheet" href="/styles/createSchool.css">
+<link rel="stylesheet" href="/styles/add-prize.css">
+<link rel="stylesheet" href="/styles/students.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Set Attendance</h1>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Input</h2>
+                <p><%= inputData.errorMessage %></p>
+            </section>
+        <% } %>
+        <h2>Total Attendance: <%= inputData.totalAttendance %></h2>
+        <table class="table">
+            <tr class="table-header">
+                <th><a href="#" class="btn">Student ID</a></th>
+                <th><a href="#" class="btn">Name</a></th>
+                <th><a href="#" class="btn">Grade</a></th>
+                <th><a href="#" class="btn">Points</a></th>
+            </tr>
+            <tbody id="student-table">
+                <% for (student of inputData.Attendees) { %>
+                    <tr>
+                        <td><%= student.student_id %></td>
+                        <td><%= student.name %></td>
+                        <td><%= student.grade %></td>
+                        <td><%= student.points %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <form action="/setAttendance" method="POST">
+            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+            <label for="id">Attendee's ID</label>
+            <input type="text" id="id" name="id" value="<%= inputData.id %>" required>
+            <button class="btn">Set Attendance</button>
+        </form>
+    </main>
+<%- include('../../../shared/includes/footer') %>

@@ -1,0 +1,34 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/new-schools.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1 class="center">Join a new School</h1>
+            <% if (inputData.errorMessage) { %>
+                <section class="alert">
+                    <h2>Invalid Credentials</h2>
+                    <p><%= inputData.errorMessage %></p>
+                </section>
+            <% } %>
+            <section class="center">
+                <form action="/preview-school" method="POST" id="search">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                    <input type="text" name="searchbar" placeholder="Search using a school ID">
+                    <button type="text" id=search-button><img src="images/search.png" id=search-icon></button>
+                </form>
+            </section>
+            <section id="bottom-section">
+                <p>
+                    <h2>Not Finding a School?</h3>
+                    <a href="/create-school" class="btn">Create a School</a>
+                </p>
+            </section>
+        <% } %>
+    </main>
+<%- include('../../../shared/includes/footer') %>

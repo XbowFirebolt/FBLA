@@ -1,0 +1,56 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Add Prizes'}) %>
+<link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/forms.css">
+<link rel="stylesheet" href="/styles/createSchool.css">
+<link rel="stylesheet" href="/styles/add-prize.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <h1>Edit Prize</h1>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Input</h2>
+                <p><%= inputData.errorMessage %></p>
+            </section>
+        <% } %>
+        <form action="/edit-Prize" method="POST">
+            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+            <p>
+                <label for="name">Prize's Name</label>
+                <input type="text" id="name" name="name" value="<%= inputData.name %>" required>
+            </p>
+            <% if (inputData.type_id === 1) { %>
+            <label for="rewardTypes">Choose a reward type:</label>
+                <select name="rewardTypes" id="rewardTypes">
+                    <option value="1" selected>A School Reward</option>
+                    <option value="2">A Food Reward</option>
+                    <option value="3">A School Spirit Item</option>
+                </select>
+            <% } %>
+            <% if (inputData.type_id === 2) { %>
+                <label for="rewardTypes">Choose a reward type:</label>
+                    <select name="rewardTypes" id="rewardTypes">
+                        <option value="1">A School Reward</option>
+                        <option value="2" selected>A Food Reward</option>
+                        <option value="3">A School Spirit Item</option>
+                    </select>
+            <% } %>
+            <% if (inputData.type_id === 3) { %>
+                <label for="rewardTypes">Choose a reward type:</label>
+                    <select name="rewardTypes" id="rewardTypes">
+                        <option value="1">A School Reward</option>
+                        <option value="2">A Food Reward</option>
+                        <option value="3" selected>A School Spirit Item</option>
+                    </select>
+            <% } %>    
+            <p>
+                <label for="points_required">Points Required</label>
+                <input type="text" id="points_required" name="points_required" value="<%= inputData.points_required %>" required>
+            </p>
+            <button class="btn">Edit Prize</button>
+            <a href="/editPrizes/<%= inputData.id %>" class="btn">Revert</a>
+            <a href="/deletePrize" class="btn">Delete</a>
+        </form>
+    </main>
+<%- include('../../../shared/includes/footer') %>

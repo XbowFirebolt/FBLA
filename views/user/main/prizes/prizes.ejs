@@ -1,0 +1,47 @@
+<%- include('../../../shared/includes/head', { pageTitle: 'Main'}) %>
+<link rel="stylesheet" href="/styles/students.css">
+</head>
+<body>
+    <%- include('../../../shared/includes/header') %>
+    <main>
+        <% if (!locals.isAuth) { %>
+            <h1>Not Logged In</h1>
+            <p>Please Log in</p>
+        <% } %>
+        <% if (locals.isAuth) { %>
+            <h1>Prizes</h1>
+            <% if (inputData.exists) { %>
+            <section id="center">
+                <form action="/prizesSearch" method="POST" class="search">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                    <input type="text" name="searchbar" placeholder="Search for a prize">
+                    <button class="btn">Search</button>
+                </form>
+            </section>
+            <table class="table">
+                <tr class="table-header">
+                    <th><a href="/prizes/prizes.id" class="btn">Prize ID</a></th>
+                    <th><a href="/prizes/prizes.name" class="btn">Name</a></th>
+                    <th><a href="/prizes/prizes.type_id" class="btn">Type</a></th>
+                    <th><a href="/prizes/prizes.points_required" class="btn">Points Required</a></th>
+                </tr>
+                <tbody id="student-table">
+                    <% for (prize of inputData.allPrizes) { %>
+                        <tr>
+                            <td><%= prize.id %></td>
+                            <td><%= prize.name %></td>
+                            <td><%= prize.type %></td>
+                            <td><%= prize.points_required %></td>
+                            <td><a href="/editPrizes/<%= prize.id %>">Edit</a></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <% } %>
+            <section id="bottomSection">
+                <h2>Adding new Prizes?</h2>
+                <a href="/add-prizes" class="btn">Add a Prize</a>
+            </section>
+        <% } %>
+    </main>
+<%- include('../../../shared/includes/footer') %>

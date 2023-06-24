@@ -1,7 +1,5 @@
 const express = require('express');
 
-const db = require('../data/database');
-
 const authConrtoller = require("../controllers/auth.controller");
 
 const router = express.Router();

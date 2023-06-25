@@ -7,12 +7,11 @@ const validation = require('../util/validation');
 async function getStudents(req, res, next) {
 
     try {
-        const query = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ?';
+        const query = 'SELECT * FROM fbla.students WHERE school_id = ?';
 
         const students = await db.query(query, req.session.selectedSchool);
 
         if (students[0][0] === undefined) {
-
             const sessionData = {
                 exists: false,
                 top5: [],
@@ -25,19 +24,12 @@ async function getStudents(req, res, next) {
             const allStudentsDB = await db.query(query, req.session.selectedSchool);
 
             const allStudents = allStudentsDB[0];
-            var studentList = students[0];
-            var top5 = [];
 
-            studentList.sort((a, b) => parseInt(b.points) - parseInt(a.points));
+            const top5Query = 'SELECT * FROM fbla.students WHERE school_id = ? ORDER BY points DESC LIMIT 5';
 
-            for (let i = 0; i < 5; i++) {
-                if(studentList[0] === undefined) {
-                    break;
-                } else {
-                    top5.push(studentList[0]);
-                    studentList.shift();
-                }
-            }
+            const studentList = await db.query(top5Query, req.session.selectedSchool);
+
+            const top5 = studentList[0];
 
             req.session.top5Students = top5;
 
@@ -58,7 +50,7 @@ async function randomizeStudents(req, res, next) {
 
     const ErrorData = {
         errorMessage: 'Invalid Input!',
-        searchbar: req.body.searchbar
+        searchbar: req.body.searchbar   
     }
 
     var gradeRequirement;
@@ -83,7 +75,7 @@ async function randomizeStudents(req, res, next) {
         const top5 = req.session.top5Students;
 
         for(o of top5) {
-            top5Id.push(o.student_id);
+            top5Id.push(o.id);
         }
 
         const queryData = [
@@ -98,10 +90,10 @@ async function randomizeStudents(req, res, next) {
         ]
 
         if(!(gradeRequirement === '')) {
-            query = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.grade = ? AND student_id NOT IN (?) ORDER BY RAND() LIMIT 5';
+            query = 'SELECT * FROM fbla.students WHERE school_id = ? AND grade = ? AND id NOT IN (?) ORDER BY RAND() LIMIT 5';
             students = await db.query(query, queryData);
         } else {
-            query = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND student_id NOT IN (?) ORDER BY RAND() LIMIT 5';
+            query = 'SELECT * FROM fbla.students WHERE school_id = ? AND id NOT IN (?) ORDER BY RAND() LIMIT 5';
             students = await db.query(query, queryData2);
         }
         
@@ -151,9 +143,9 @@ async function addStudent(req, res, next) {
             })
             return;
         }
-    
+        
         const newStudent = new Student(
-            req.body.name, req.body.grade, req.body.points
+            req.body.name, req.body.grade, req.body.points, req
             );
     
         try {
@@ -169,7 +161,7 @@ async function addStudent(req, res, next) {
 async function tableSearch(req, res, next) {
 
     try {
-        const query = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ?';
+        const query = 'SELECT * FROM fbla.students WHERE students.school_id = ?';
 
         const students = await db.query(query, req.session.selectedSchool);
         
@@ -189,32 +181,25 @@ async function tableSearch(req, res, next) {
 
             req.session.studentTableSearchbar = req.body.searchbar;
 
-            var searchQuery = '';
+            var searchQuery = 'SELECT * FROM fbla.students WHERE students.school_id = ? AND students.name LIKE ? ORDER BY ';
 
             const search = '%' + req.body.searchbar + '%';
 
             const header = req.session.studentTableSearch.header;
-
-            if(req.session.studentTableSearch.descending) {
-                if(header === 'students.name') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.name DESC';
-                } else if(header === 'students.grade') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.grade DESC';
-                } else if(header === 'students.points') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.points DESC';
-                } else {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.id DESC';
-                }
+ 
+            if(header === 'students.name') {
+                searchQuery += 'students.name'
+            } else if(header === 'students.grade') {
+                searchQuery += 'students.grade'
+            } else if(header === 'students.points') {
+                searchQuery += 'students.points'
             } else {
-                if(header === 'students.name') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.name ASC';
-                } else if(header === 'students.grade') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.grade ASC';
-                } else if(header === 'students.points') {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.points ASC';
-                } else {
-                    searchQuery = 'SELECT * FROM fbla.student_schools INNER JOIN students ON fbla.student_schools.student_id = students.id WHERE school_id = ? AND students.name LIKE ? ORDER BY students.id ASC';
-                }
+                searchQuery += 'id'
+            }
+            if(req.session.studentTableSearch.descending) {
+                searchQuery += ' DESC';
+            } else {
+                searchQuery += ' ASC';
             }
 
             const data = [
@@ -273,7 +258,7 @@ async function getEditStudent(req, res) {
     try {
         const id = req.params.id;
 
-        const query = 'SELECT * FROM fbla.students WHERE id = ?';
+        const query = 'SELECT * FROM fbla.students WHERE students.id = ?';
 
         const editStudent = await db.query(query, id);
 
@@ -330,7 +315,7 @@ async function editStudent(req, res) {
 }
 
 async function deleteStudent(req, res) {
-    const query = 'DELETE FROM fbla.students WHERE id = ?';
+    const query = 'DELETE FROM fbla.students WHERE students.id = ?';
 
     await db.query(query, req.session.selectedStudent);
 

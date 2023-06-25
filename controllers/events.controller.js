@@ -246,7 +246,15 @@ async function deleteEvent(req, res) {
     res.redirect('/events');
 }
 
-function getAttendance(req, res) {
+async function getAttendance(req, res) {
+
+    const query = 'SELECT * FROM fbla.students';
+
+    try {
+        
+    } catch (error) {
+        next(error);
+    }
 
     const sessionData = {
         totalAttendance: 0,

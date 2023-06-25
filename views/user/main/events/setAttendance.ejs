@@ -1,13 +1,13 @@
-<%- include('../../../shared/includes/head', { pageTitle: 'Add Prizes'}) %>
-<link rel="stylesheet" href="/styles/auth.css">
+<%- include('../../../shared/includes/head', { pageTitle: 'Set Attendance'}) %>
 <link rel="stylesheet" href="/styles/forms.css">
-<link rel="stylesheet" href="/styles/createSchool.css">
 <link rel="stylesheet" href="/styles/add-prize.css">
 <link rel="stylesheet" href="/styles/students.css">
+<link rel="stylesheet" href="/styles/attendance.css">
 </head>
 <body>
     <%- include('../../../shared/includes/header') %>
     <main>
+        <h1><%= inputData.name %></h1>
         <h1>Set Attendance</h1>
         <% if (inputData.errorMessage) { %>
             <section class="alert">
@@ -16,29 +16,43 @@
             </section>
         <% } %>
         <h2>Total Attendance: <%= inputData.totalAttendance %></h2>
-        <table class="table">
-            <tr class="table-header">
-                <th><a href="#" class="btn">Student ID</a></th>
-                <th><a href="#" class="btn">Name</a></th>
-                <th><a href="#" class="btn">Grade</a></th>
-                <th><a href="#" class="btn">Points</a></th>
-            </tr>
-            <tbody id="student-table">
-                <% for (student of inputData.Attendees) { %>
-                    <tr>
-                        <td><%= student.student_id %></td>
-                        <td><%= student.name %></td>
-                        <td><%= student.grade %></td>
-                        <td><%= student.points %></td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-        <form action="/setAttendance" method="POST">
+        <form action="/searchAttendance" method="POST" id="search">
             <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
             <label for="id">Attendee's ID</label>
             <input type="text" id="id" name="id" value="<%= inputData.id %>" required>
             <button class="btn">Set Attendance</button>
+        </form>
+        <form action="/setAttendance" method="POST">
+            <table class="table">
+                <tr class="table-header">
+                    <th><a href="#" class="btn">Attended</a></th>
+                    <th><a href="#" class="btn">Student ID</a></th>
+                    <th><a href="#" class="btn">Name</a></th>
+                    <th><a href="#" class="btn">Grade</a></th>
+                    <th><a href="#" class="btn">Points</a></th>
+                </tr>
+                <tbody id="student-table">
+                    <% for (student of inputData.Attendees) { %>
+                        <% if (inputData.attended === 1) { %>
+                            <tr>
+                                <td><input type="checkbox" id="attended" name="attended" value="<%= inputData.attended %>" checked></td>
+                                <td><%= student.student_id %></td>
+                                <td><%= student.name %></td>
+                                <td><%= student.grade %></td>
+                                <td><%= student.points %></td>
+                            </tr>
+                        <% } else { %>
+                            <tr>
+                                <td><input type="checkbox" id="attended" name="attended" value="<%= inputData.attended %>"></td>
+                                <td><%= student.student_id %></td>
+                                <td><%= student.name %></td>
+                                <td><%= student.grade %></td>
+                                <td><%= student.points %></td>
+                            </tr>
+                        <% } %>
+                    <% } %>
+                </tbody>
+            </table>
         </form>
     </main>
 <%- include('../../../shared/includes/footer') %>

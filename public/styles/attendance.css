@@ -1,0 +1,26 @@
+.table-header th{
+    width: 20%;
+}
+
+#search {
+    max-width: 25rem;
+    margin: var(--space-8) auto;
+    padding: var(--space-4);
+    background-color: var(--color-gray-600);
+    border-radius: var(--border-radius-medium);
+    text-align: center;
+}
+
+#search a {
+    color: var(--color-primary-200);
+}
+
+#search a:hover,
+#search a:active {
+    color: var(--color-primary-400);
+}
+
+form table tr .btn {
+    padding: var(--space-1);
+    display: block;
+}

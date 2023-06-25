@@ -86,3 +86,8 @@ hr {
     align-items: center;
     text-align: center;
 }
+
+table tr .btn {
+    padding: var(--space-1);
+    display: block;
+}

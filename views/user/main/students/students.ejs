@@ -75,11 +75,11 @@
                 <tbody id="student-table">
                     <% for (student of inputData.allStudents) { %>
                         <tr>
-                            <td><%= student.student_id %></td>
+                            <td><%= student.id %></td>
                             <td><%= student.name %></td>
                             <td><%= student.grade %></td>
                             <td><%= student.points %></td>
-                            <td><a href="/editStudent/<%= student.student_id %>">Edit</a></td>
+                            <td><a href="/editStudent/<%= student.id %>">Edit</a></td>
                         </tr>
                     <% } %>
                 </tbody>

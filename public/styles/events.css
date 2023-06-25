@@ -1,3 +1,7 @@
 .table-header th{
     width: 16.66667%;
 }
+
+table tr .btn {
+    padding: var(--space-1);
+}

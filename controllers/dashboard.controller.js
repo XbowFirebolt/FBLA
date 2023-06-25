@@ -31,6 +31,39 @@ async function getDashboard(req, res) {
             return;
         } else {
             req.session.selectedSchool = req.params.id;
+            
+            req.session.newSchoolId = -1;
+
+            req.session.selectedStudent = -1;
+
+            req.session.randomStudents = [];
+
+            req.session.studentTableSearch = {
+                header: 'students.id',
+                descending: false
+            };
+
+            req.session.studentTableSearchbar = '';
+
+            req.session.top5Students = [];
+
+            req.session.selectedPrize = -1;
+
+            req.session.prizeTableSearch = {
+                header: 'prizes.id',
+                descending: false
+            }
+
+            req.session.prizeSearchbar = '';
+
+            req.session.selectedEvent = -1;
+
+            req.session.eventTableSearch = {
+                header: 'event.id',
+                descending: false
+            }
+
+            req.session.eventSearchbar = '';
             res.redirect("/dashboard");
             return;
         }   

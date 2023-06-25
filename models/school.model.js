@@ -16,7 +16,7 @@ class School {
         };
     }
 
-    async create() {
+    async create(req, res) {
         const hashedPassword = await bcrypt.hash(this.password, 12);
 
         const data = [
@@ -30,7 +30,49 @@ class School {
             this.totalAddress.country
         ];
 
-        await db.query('INSERT INTO fbla.schools (name, password, district_id, address, postal, city, state, country) VALUES (?)', [data]);
+        const result = await db.query('INSERT INTO fbla.schools (name, password, district_id, address, postal, city, state, country) VALUES (?)', [data]);
+        
+        const queryData = [
+            req.session.uid,
+            result[0].insertId
+        ]
+
+        await db.query('INSERT INTO fbla.user_schools (user_id, schools_id) VALUES (?)', [queryData]);
+
+        req.session.selectedSchool = result[0].insertId;
+
+        req.session.newSchoolId = -1;
+
+        req.session.selectedStudent = -1;
+
+        req.session.randomStudents = [];
+
+        req.session.studentTableSearch = {
+            header: 'students.id',
+            descending: false
+        };
+
+        req.session.studentTableSearchbar = '';
+
+        req.session.top5Students = [];
+
+        req.session.selectedPrize = -1;
+
+        req.session.prizeTableSearch = {
+            header: 'prizes.id',
+            descending: false
+        }
+
+        req.session.prizeSearchbar = '';
+
+        req.session.selectedEvent = -1;
+
+        req.session.eventTableSearch = {
+            header: 'event.id',
+            descending: false
+        }
+
+        req.session.eventSearchbar = '';
     }
 
     static async getSchools(id, next) {

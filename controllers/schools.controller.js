@@ -90,13 +90,12 @@ async function createSchool(req, res, next) {
         );
     
     try {
-        await school.create();
+        await school.create(req);
+        res.redirect('/dashboard');
     } catch (error) {
         next(error);
         return;
     }
-
-    res.redirect('/dashboard');
 }
 
 function getNewSchools(req, res) {
@@ -185,7 +184,7 @@ async function joinSchool(req, res, next) {
         return;
     }
 
-    const uid = await req.session.uid;
+    const uid = req.session.uid;
 
     const searchErrorData = {
         errorMessage: 'You have already joined this school',
@@ -209,7 +208,7 @@ async function joinSchool(req, res, next) {
         return;
     }
 
-    db.query(query, [data]);
+    await db.query(query, [data]);
 
     req.session.selectedSchool = req.session.newSchoolId;
 

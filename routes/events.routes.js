@@ -22,4 +22,6 @@ router.get('/deleteEvent', eventsConrtoller.deleteEvent);
 
 router.get('/setAttendance/:id', eventsConrtoller.getAttendance);
 
+router.post('/setAttendance', eventsConrtoller.setAttendance);
+
 module.exports = router;

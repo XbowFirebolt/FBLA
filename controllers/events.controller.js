@@ -1,3 +1,4 @@
+const session = require('express-session');
 const db = require('../data/database');
 
 const Event = require('../models/event.model');
@@ -246,24 +247,85 @@ async function deleteEvent(req, res) {
     res.redirect('/events');
 }
 
-async function getAttendance(req, res) {
-
-    const query = 'SELECT * FROM fbla.students';
+async function getAttendance(req, res, next) {
 
     try {
+
+        req.session.selectedEvent = req.params.id;
+
+        const queryAttendees = 'SELECT * FROM fbla.student_events INNER JOIN fbla.students ON student_events.student_id = students.id WHERE event_id = ?';
+
+        const attendees = await db.query(queryAttendees, req.session.selectedEvent);
+
+        var query = 'SELECT * FROM fbla.students WHERE id NOT IN (?) AND school_id = ?';
+
+        if (attendees[0][0] === undefined) {
+
+            query = 'SELECT * FROM fbla.students WHERE school_id = ?';
+            const nonAttendees = await db.query(query, req.session.selectedSchool);
+
+            const sessionData = {
+                totalAttendance: 0,
+                exists: false,
+                attended: [],
+                students: nonAttendees[0]
+            }
+
+            res.render('user/main/events/setAttendance', { inputData: sessionData });
+            return;
+        }
+
+        var attendeesID = [];
+
+        for(o of attendees[0]) {
+            attendeesID.push(o.id);
+        }
+
+        const inputData = [
+            attendeesID, 
+            req.session.selectedEvent
+        ]
+
+        const nonAttendees = await db.query(query, inputData);
+
+        const sessionData = {
+            totalAttendance: 0,
+            exists: true,
+            attended: attendees[0],
+            students: nonAttendees[0]
+        }
+
+        res.render('user/main/events/setAttendance', { inputData: sessionData });
         
     } catch (error) {
         next(error);
     }
+}
 
-    const sessionData = {
-        totalAttendance: 0,
-        Attendees: [],
-        id: ''
-    };
+async function setAttendance(req, res, next) {
 
+    const attendedCount = req.body.attended;
 
-    res.render('user/main/events/setAttendance', { inputData: sessionData });
+    const query = 'SELECT * FROM fbla.students WHERE id IN (?)';
+
+    const attendees = await db.query(query, [attendedCount]);
+
+    const removeQuery = 'DELETE FROM fbla.student_events WHERE event_id = ?';
+
+    await db.query(removeQuery, req.session.selectedEvent);
+
+    const insertAttendee = 'INSERT INTO fbla.student_events SET student_id = ?,  event_id = ?';
+
+    for (o of attendees[0]) {
+        data = [
+            o.id,
+            req.session.selectedEvent
+        ];
+        await db.query(insertAttendee, data); 
+    }  
+
+    res.redirect('/events'); 
+
 }
 
 module.exports = {
@@ -275,5 +337,6 @@ module.exports = {
     getEditEvent: getEditEvent,
     editEvent: editEvent,
     deleteEvent: deleteEvent,
-    getAttendance: getAttendance
+    getAttendance: getAttendance,
+    setAttendance: setAttendance
 }

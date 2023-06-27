@@ -24,3 +24,7 @@ form table tr .btn {
     padding: var(--space-1);
     display: block;
 }
+
+form .btn {
+    margin-top: var(--space-4);
+}

@@ -5,21 +5,21 @@
 html {
     font-family: 'Dosis', sans-serif;
 
-    --color-gray-50: rgb(243, 236, 230);
-    --color-gray-100: rgb(207, 201, 195);
-    --color-gray-300: rgb(99, 92, 86);
-    --color-gray-400: rgb(70, 65, 60);
-    --color-gray-500: rgb(37, 34, 31);
-    --color-gray-600: rgb(32, 29, 26);
-    --color-gray-700: rgb(31, 26, 22);
+    --color-gray-50: rgb(255, 248, 242);
+    --color-gray-100: rgb(232, 228, 224);
+    --color-gray-300: rgb(122, 115, 109);
+    --color-gray-400: rgb(96, 90, 85);
+    --color-gray-500: rgb(62, 58, 54);
+    --color-gray-600: rgb(54, 50, 45);
+    --color-gray-700: rgb(43, 37, 33);
 
-    --color-primary-50: rgb(148, 212, 255);
-    --color-primary-100: rgb(123, 158, 255);
-    --color-primary-200: rgb(86, 124, 230);
-    --color-primary-400: rgb(37, 72, 187);
-    --color-primary-500: rgb(20, 63, 206);
-    --color-primary-700: rgb(9, 43, 117);
-    --color-primary-200-contrast: rgb(230, 217, 42);
+    --color-primary-50: rgb(255, 221, 148);
+    --color-primary-100: rgb(255, 176, 123);
+    --color-primary-200: rgb(230, 160, 86);
+    --color-primary-400: rgb(187, 114, 37);
+    --color-primary-500: rgb(206, 135, 20);
+    --color-primary-700: rgb(117, 56, 9);
+    --color-primary-200-contrast: rgb(42, 80, 230);
     --color-primary-500-contrast: white;
 
     --color-error-100: rgb(255, 225, 180);

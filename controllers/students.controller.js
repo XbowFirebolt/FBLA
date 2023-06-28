@@ -7,6 +7,22 @@ const validation = require('../util/validation');
 async function getStudents(req, res, next) {
 
     try {
+        const pointsQuery = 'SELECT student_id, SUM(reward) AS total_points, fbla.students.school_id FROM fbla.student_events JOIN fbla.students ON fbla.student_events.student_id = fbla.students.id JOIN fbla.events ON fbla.student_events.event_id = fbla.events.event_id WHERE fbla.students.school_id = ? GROUP BY student_id';
+
+        const points = await db.query(pointsQuery, req.session.selectedSchool);
+
+        if(points[0][0] === undefined) {
+
+        } else {
+            for(o of points[0]) {
+                data = [
+                    o.total_points,
+                    o.student_id
+                ]
+                await db.query('UPDATE fbla.students SET points = ? WHERE id = ?', data)
+            }
+        }
+
         const query = 'SELECT * FROM fbla.students WHERE school_id = ?';
 
         const students = await db.query(query, req.session.selectedSchool);

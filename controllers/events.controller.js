@@ -277,13 +277,15 @@ async function getAttendance(req, res, next) {
 
         var attendeesID = [];
 
+        //if(attendees[0] === undefined)
+
         for(o of attendees[0]) {
             attendeesID.push(o.id);
         }
 
         const inputData = [
             attendeesID, 
-            req.session.selectedEvent
+            req.session.selectedSchool
         ]
 
         const nonAttendees = await db.query(query, inputData);
@@ -306,23 +308,37 @@ async function setAttendance(req, res, next) {
 
     const attendedCount = req.body.attended;
 
-    const query = 'SELECT * FROM fbla.students WHERE id IN (?)';
-
-    const attendees = await db.query(query, [attendedCount]);
-
     const removeQuery = 'DELETE FROM fbla.student_events WHERE event_id = ?';
 
     await db.query(removeQuery, req.session.selectedEvent);
 
+    if(attendedCount === undefined) {
+        res.redirect('/events'); 
+        return;
+    }
+
     const insertAttendee = 'INSERT INTO fbla.student_events SET student_id = ?,  event_id = ?';
 
-    for (o of attendees[0]) {
+    if (typeof attendedCount === 'string' || attendedCount instanceof String) {
+
         data = [
-            o.id,
+            attendedCount,
+            req.session.selectedEvent
+        ]
+
+        await db.query(insertAttendee, data);
+
+        res.redirect('/events');
+        return;
+    }
+
+    for (o of attendedCount) {
+        data = [
+            o,
             req.session.selectedEvent
         ];
         await db.query(insertAttendee, data); 
-    }  
+    }
 
     res.redirect('/events'); 
 

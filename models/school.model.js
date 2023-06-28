@@ -6,7 +6,6 @@ class School {
     constructor(name, password, address, postal, city, state, country) {
         this.name = name;
         this.password = password;
-        this.district = -1;
         this.totalAddress = {
             address: address,
             postal: postal, 
@@ -22,7 +21,6 @@ class School {
         const data = [
             this.name,
             hashedPassword,
-            this.district,
             this.totalAddress.address,
             this.totalAddress.postal,
             this.totalAddress.city,
@@ -30,7 +28,7 @@ class School {
             this.totalAddress.country
         ];
 
-        const result = await db.query('INSERT INTO fbla.schools (name, password, district_id, address, postal, city, state, country) VALUES (?)', [data]);
+        const result = await db.query('INSERT INTO fbla.schools (name, password, address, postal, city, state, country) VALUES (?)', [data]);
         
         const queryData = [
             req.session.uid,

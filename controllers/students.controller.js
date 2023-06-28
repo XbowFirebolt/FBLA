@@ -285,7 +285,6 @@ async function getEditStudent(req, res) {
                 id: editStudent[0][0].id,
                 name: editStudent[0][0].name,
                 grade: editStudent[0][0].grade,
-                points: editStudent[0][0].points
             };
         }
 
@@ -300,15 +299,14 @@ async function getEditStudent(req, res) {
 
 async function editStudent(req, res) {
 
-    const query = 'UPDATE fbla.students SET name = ?, grade = ?, points = ? WHERE id = ?';
+    const query = 'UPDATE fbla.students SET name = ?, grade = ? WHERE id = ?';
 
     const enteredData = {
         name: req.body.name,
         grade: req.body.grade,
-        points: req.body.points
     }
 
-    if(!validation.studentDetailsAreValid(enteredData.name, enteredData.grade, enteredData.points)) {
+    if(!validation.editStudentDetailsAreValid(enteredData.name, enteredData.grade)) {
         sessionFlash.flashDataToSession(req, { errorMessage: 'Please check your input', ...enteredData }, 
         function() {
             res.redirect('/editStudent/' + req.session.selectedStudent.toString());
@@ -319,7 +317,6 @@ async function editStudent(req, res) {
     data = [
         req.body.name,
         req.body.grade,
-        req.body.points,
         req.session.selectedStudent
     ]
 

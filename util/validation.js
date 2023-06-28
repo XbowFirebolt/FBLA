@@ -45,6 +45,19 @@ function studentDetailsAreValid(name, grade, points) {
         )
 }
 
+function editStudentDetailsAreValid(name, grade) {
+
+    const intGrade = parseInt(grade);
+
+    return (
+        name &&
+        name.trim() !== '' &&
+        grade &&
+        grade.trim() !== '' &&
+        Number.isInteger(intGrade)
+        )
+}
+
 function prizeDetailsAreValid(name, points_required) {
 
     const intPoints_required = parseInt(points_required);
@@ -83,5 +96,6 @@ module.exports = {
     studentDetailsAreValid: studentDetailsAreValid,
     passwordIsConfirmed: passwordIsConfirmed,
     prizeDetailsAreValid: prizeDetailsAreValid,
-    eventDetailsAreValid: eventDetailsAreValid
+    eventDetailsAreValid: eventDetailsAreValid,
+    editStudentDetailsAreValid: editStudentDetailsAreValid
 }

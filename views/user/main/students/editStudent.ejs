@@ -23,10 +23,6 @@
                 <label for="grade">Student's Grade</label>
                 <input type="text" id="grade" name="grade" value="<%= inputData.grade %>" required>
             </p>
-            <p>
-                <label for="points">Points</label>
-                <input type="text" id="points" name="points" value="<%= inputData.points %>" required>
-            </p>
             <button class="btn">Save Changes</button>
             <a href="/editStudent/<%= inputData.id %>" class="btn">Revert</a>
             <a href="/deleteStudent" class="btn">Delete</a>

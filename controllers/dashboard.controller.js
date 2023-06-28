@@ -69,8 +69,19 @@ async function getDashboard(req, res) {
         }   
     }
 
+    const student = await db.query('SELECT * FROM fbla.students WHERE school_id = ? ORDER BY points DESC LIMIT 1', req.session.selectedSchool);
+    const highEvent = await db.query('SELECT * FROM fbla.events WHERE school_id = ? ORDER BY reward DESC LIMIT 1', req.session.selectedSchool);
+    const lowEvent = await db.query('SELECT * FROM fbla.events WHERE school_id = ? ORDER BY reward ASC LIMIT 1', req.session.selectedSchool);
+    const highPrize = await db.query('SELECT * FROM fbla.prizes WHERE school_id = ? ORDER BY points_required DESC LIMIT 1', req.session.selectedSchool);
+    const lowPrize = await db.query('SELECT * FROM fbla.prizes WHERE school_id = ? ORDER BY points_required ASC LIMIT 1', req.session.selectedSchool);
+
     const schoolData = {
-        schools: schools
+        schools: schools,
+        student: student[0][0].name,
+        highEvent: highEvent[0][0].name,
+        lowEvent: lowEvent[0][0].name,
+        highPrize: highPrize[0][0].name,
+        lowPrize: lowPrize[0][0].name
     }
 
     res.render('user/main/dashboard/dashboard', { inputData: schoolData });

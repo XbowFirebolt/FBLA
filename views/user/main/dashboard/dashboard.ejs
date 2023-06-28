@@ -15,7 +15,16 @@
         </div>
         <hr>
         <section>
-            <p>Stats...</p>
+            <h1>The person with the most points is...</h1>
+            <p><%= inputData.student %></p>
+            <h1>The event with the highest points is...</h1>
+            <p><%= inputData.highEvent %></p>
+            <h1>The event with the least points is...</h1>
+            <p><%= inputData.lowEvent %></p>
+            <h1>The prize that requires the most points is...</h1>
+            <p><%= inputData.highPrize %></p>
+            <h1>The prize that requires the least points is...</h1>
+            <p><%= inputData.lowPrize %></p>
         </section>
     </main>
 <%- include('../../../shared/includes/footer') %>
